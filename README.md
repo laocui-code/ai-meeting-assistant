@@ -1,219 +1,139 @@
-# AI Meeting Assistant
+# AI 会议助手
 
-An AI-powered meeting minutes and action item management system.
+一个基于 AI 的会议管理系统，帮助自动生成会议纪要、提取待办事项，并与外部任务系统集成。
 
-## Project Overview
+## 项目概述
 
-This project is built as part of an 18-episode tutorial series that teaches you how to build a complete AI Agent system from scratch.
+### 核心功能
 
-### Features (by Version)
+- **智能记录**：AI 自动生成结构化会议纪要（摘要、决策、讨论要点）
+- **待办追踪**：自动提取和管理待办事项（负责人、截止日期、优先级）
+- **智能搜索**：支持关键词搜索和语义搜索
+- **无缝集成**：与 Notion、Jira、Google Calendar 等系统集成
+- **对话界面**：使用自然语言查询会议信息
 
-**V1 - Core Features (Episodes 1-8)**
-- Meeting input and storage
-- AI-generated structured meeting summaries
-- Automatic action item extraction
-- Action item status management
-- Meeting list and detail views
-- Export to Markdown/PDF
+### 版本演进
 
-**V2 - Collaboration & Search (Episodes 9-12)**
-- Participant identification and management
-- Meeting classification and tagging
-- Keyword and semantic search
-- Advanced filtering
+| 版本 | 核心能力 | 对应集数 |
+|------|----------|----------|
+| V1 | 会议纪要生成 + 待办事项提取 | E01-E08 |
+| V2 | 参与者管理 + 语义搜索 | E09-E12 |
+| V3 | 外部系统集成 + 自动化 | E13-E15 |
+| V4 | 对话查询 + Agent 能力 | E16-E18 |
 
-**V3 - External Integrations (Episodes 13-15)**
-- Notion/Jira integration
-- Google Calendar sync
-- Post-meeting automation
-- Multi-channel notifications
+## 技术栈
 
-**V4 - Agent Capabilities (Episodes 16-18)**
-- Conversational meeting queries
-- Cross-meeting analysis
-- Intelligent recommendations
-- Agent self-reflection
+### 后端
 
-## Tech Stack
+- **语言**：Python 3.10+
+- **框架**：FastAPI
+- **ORM**：SQLAlchemy 2.0+
+- **数据库**：
+  - 开发环境：SQLite
+  - 生产环境：PostgreSQL + pgvector
 
-- **Backend**: Python 3.10+ / FastAPI
-- **Database**: SQLite (dev) / PostgreSQL (prod)
-- **ORM**: SQLAlchemy 2.0
-- **LLM**: Claude / GPT-4 / Qwen
-- **Vector DB**: Chroma / pgvector
-- **Frontend**: React 18 + TypeScript
+### AI 能力
 
-## Getting Started
+- **大语言模型**：Claude / GPT-4 / 通义千问（可选）
+- **向量数据库**：Chroma（开发）/ pgvector（生产）
+- **Embedding 模型**：Sentence Transformers / OpenAI Embeddings
 
-### Prerequisites
+### 前端
 
-- Python 3.10 or higher
-- pip (Python package manager)
-- Git
+- **框架**：React 18 + TypeScript
+- **UI 组件**：Ant Design / shadcn/ui
+- **状态管理**：Zustand
+- **数据请求**：TanStack Query
 
-### Installation
+### 外部集成
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd ai-meeting-assistant
-   ```
+- Notion API
+- Jira REST API
+- Google Calendar API
+- SendGrid / Slack Webhook
 
-2. **Set up Python virtual environment**
-   ```bash
-   cd backend
-   python -m venv venv
-   
-   # Activate virtual environment
-   # On Mac/Linux:
-   source venv/bin/activate
-   # On Windows:
-   venv\Scripts\activate
-   ```
-
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configure environment variables**
-   ```bash
-   # Copy the example environment file
-   cp env.example .env
-   
-   # Edit .env with your API keys
-   # At minimum, set your LLM API key:
-   # ANTHROPIC_API_KEY=sk-ant-your-key
-   # or
-   # OPENAI_API_KEY=sk-your-key
-   ```
-
-5. **Run the application**
-   ```bash
-   uvicorn app.main:app --reload
-   ```
-
-6. **Verify installation**
-   - Health check: http://localhost:8000/health
-   - API docs: http://localhost:8000/docs
-
-## Project Structure
+## 项目结构
 
 ```
-backend/
-├── app/
-│   ├── __init__.py
-│   ├── main.py              # Application entry point
-│   ├── api/                 # API routes
-│   │   └── v1/
-│   │       ├── __init__.py
-│   │       └── endpoints/
-│   │           ├── meetings.py
-│   │           └── action_items.py
-│   ├── core/                # Core configuration
+ai-meeting-assistant/
+├── backend/
+│   ├── app/
 │   │   ├── __init__.py
-│   │   └── config.py
-│   ├── db/                  # Database configuration
-│   │   ├── __init__.py
-│   │   └── database.py
-│   ├── models/              # SQLAlchemy models
-│   │   ├── __init__.py
-│   │   ├── meeting.py
-│   │   └── action_item.py
-│   ├── schemas/             # Pydantic schemas
-│   │   ├── __init__.py
-│   │   ├── meeting.py
-│   │   └── action_item.py
-│   └── services/            # Business logic
-│       └── __init__.py
-├── requirements.txt
-├── env.example
-└── .gitignore
-
-frontend/                    # React frontend (added later)
-└── ...
+│   │   ├── main.py           # 应用入口
+│   │   ├── api/              # API 路由
+│   │   ├── models/           # 数据库模型
+│   │   ├── schemas/          # Pydantic 模型
+│   │   ├── services/         # 业务逻辑
+│   │   ├── core/             # 核心配置
+│   │   └── db/               # 数据库配置
+│   └── requirements.txt
+├── frontend/                  # 前端项目（待开发）
+└── README.md
 ```
 
-## API Endpoints
+## 快速开始
 
-### Health Check
-- `GET /health` - Application health status
-- `GET /` - Welcome message with API links
+### 1. 环境准备
 
-### Meetings (v1)
-- `GET /api/v1/meetings` - List all meetings
-- `POST /api/v1/meetings` - Create a new meeting
-- `GET /api/v1/meetings/{id}` - Get meeting details
-- `DELETE /api/v1/meetings/{id}` - Delete a meeting
-
-### Action Items (v1)
-- `GET /api/v1/action-items` - List action items
-- `POST /api/v1/action-items` - Create action item
-- `GET /api/v1/action-items/{id}` - Get action item
-- `PUT /api/v1/action-items/{id}` - Update action item
-- `PATCH /api/v1/action-items/{id}/status` - Update status
-- `DELETE /api/v1/action-items/{id}` - Delete action item
-
-## Development
-
-### Running Tests
 ```bash
-pytest
+# 确认 Python 版本 >= 3.10
+python --version
+
+# 创建项目目录
+mkdir ai-meeting-assistant
+cd ai-meeting-assistant
+
+# 创建虚拟环境
+python -m venv venv
+
+# 激活虚拟环境
+source venv/bin/activate  # Mac/Linux
+# venv\Scripts\activate   # Windows
 ```
 
-### Code Formatting
+### 2. 安装依赖
+
 ```bash
-# Format code
-black app/
-
-# Sort imports
-isort app/
-
-# Type checking
-mypy app/
+cd backend
+pip install -r requirements.txt
 ```
 
-### Database Migrations (with Alembic)
+### 3. 启动服务
+
 ```bash
-# Create a new migration
-alembic revision --autogenerate -m "description"
-
-# Apply migrations
-alembic upgrade head
+uvicorn app.main:app --reload
 ```
 
-## Episode Guide
+### 4. 验证
 
-| Episode | Topic | Key Deliverables |
-|---------|-------|------------------|
-| E01 | Project Overview & Tech Stack | Project scaffold, environment setup |
-| E02 | FastAPI & Database Design | Complete backend structure, ORM models |
-| E03 | Meeting Input & Summary Generation | LLM integration, Prompt engineering |
-| E04 | Action Item Extraction | NER, date extraction, priority |
-| E05 | Action Item Management | CRUD operations, status workflow |
-| E06 | Meeting List Frontend | React setup, API integration |
-| E07 | Meeting Detail Page | Three-column layout |
-| E08 | Summary Enhancement & Export | Editing, PDF/Markdown export |
-| E09 | Participant Management | Auto-identification, statistics |
-| E10 | Vector Storage & Keyword Search | Chroma/pgvector setup |
-| E11 | Semantic Search | Vector similarity, hybrid search |
-| E12 | Advanced Filtering | Multi-filter UI, search page |
-| E13 | Task System Integration | Notion/Jira sync |
-| E14 | Calendar Integration | Google Calendar, automation |
-| E15 | Notifications & Agent Intro | Multi-channel, tool calling |
-| E16 | Conversational Query | Chat interface, memory |
-| E17 | Cross-Meeting Analysis | RAG, conflict detection |
-| E18 | Trends & Recommendations | Analytics, self-reflection |
+- 健康检查：http://localhost:8000/health
+- API 文档：http://localhost:8000/docs
 
-## License
+## 开发进度
+
+### 已完成
+
+- [x] E01：项目概述与技术选型
+- [x] E02：FastAPI 服务搭建与数据库模型设计
+  - 分层设计的项目架构
+  - Pydantic Settings 配置管理
+  - 使用 SQLAlchemy 2.0 的 Meeting 和 ActionItem 模型
+  - 异步数据库操作
+  - API 路由结构及占位端点
+
+### 进行中
+
+- [ ] E03：会议输入与摘要生成（LLM 集成）
+
+### 待开发
+
+- [ ] E04：待办事项自动提取
+- [ ] E05：待办事项状态管理
+- [ ] E06-E08：前端开发
+- [ ] E09-E12：V2 功能
+- [ ] E13-E15：V3 功能
+- [ ] E16-E18：V4 功能
+
+## 许可证
 
 MIT License
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit issues or pull requests.
-
-## Support
-
-For questions or issues, please open a GitHub issue or leave a comment on the tutorial videos.
-

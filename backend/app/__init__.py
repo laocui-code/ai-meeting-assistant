@@ -1,3 +1,2 @@
-# AI Meeting Assistant Backend
-# Version: 0.1.0
+# AI Meeting Assistant - Backend Application
 
